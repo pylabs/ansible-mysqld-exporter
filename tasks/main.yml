@@ -3,11 +3,14 @@
   - name: create prometheus group account
     group:
       name: prometheus
+      system: yes
       state: present
   - name: create prometheus user account
     user:
       name: prometheus
       group: prometheus
+      system: yes
+      shell: "/bin/false"
       state: present
   - name: fetch mysqld exporter tar file and extract it to destination
     unarchive:
