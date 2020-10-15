@@ -28,6 +28,13 @@
       owner: prometheus
       group: prometheus
       mode: "o-rwx"
+  - name: setup mysqld exporter config file
+    template:
+      src: "mysqld_exporter.cnf"
+      dest: "{{ mysqld_exporter_base_dir }}/mysqld_exporter.cnf"
+      owner: prometheus
+      group: prometheus
+      mode: "0660"
   - name: install mysqld_exporter systemd service file
     template:
       src: "mysqld_exporter.service"
@@ -40,5 +47,6 @@
       name: "mysqld_exporter.service"
       daemon_reload: yes
       enabled: yes
+      state: restarted
   tags:
     - mysqld_exporter

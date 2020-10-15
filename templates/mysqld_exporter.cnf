@@ -1,0 +1,4 @@
+[client]
+user={{ mysqld_exporter_db_account }}
+password={{ mysqld_exporter_db_password }}
+host={{ mysqld_exporter_db_host }}
