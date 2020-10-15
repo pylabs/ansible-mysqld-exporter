@@ -16,6 +16,7 @@
     unarchive:
       src: "https://github.com/prometheus/mysqld_exporter/releases/download/v{{ mysqld_exporter_version }}/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz"
       dest: "/tmp"
+      remote_src: yes
   - name: move mysqld exporter package to final destination
     command:
       cmd: "mv /tmp/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64 {{ mysqld_exporter_base_dir }}"
