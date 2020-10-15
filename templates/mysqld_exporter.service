@@ -1,0 +1,19 @@
+[Unit]
+Description=MySQL Server Exporter
+Documentation=https://github.com/prometheus/mysqld_exporter
+After=network.target
+
+[Service]
+User=prometheus
+Group=prometheus
+Restart=on-failure
+ExecStart={{ mysqld_exporter_base_dir }}/node_exporter --web.listen-address={{ node_exporter_listen_address }}:{{ node_exporter_listen_port }}
+ExecStart={{ mysqld_exporter_base_dir }}/mysqld_exporter --config.my-cnf {{ mysqld_exporter_base_dir }}/mysqld_exporter.cnf \
+                                                         --collect.auto_increment.columns \
+                                                         --collect.binlog_size \
+                                                         --collect.engine_innodb_status \
+                                                         --collect.global_status
+                                                         --web.listen-address={{ mysqld_exporter_listen_address }}:{{ mysqld_exporter_listen_port }}
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,41 @@
+---
+- block:
+  - name: create prometheus group account
+    group:
+      name: prometheus
+      state: present
+  - name: create prometheus user account
+    user:
+      name: prometheus
+      group: prometheus
+      state: present
+  - name: fetch mysqld exporter tar file and extract it to destination
+    unarchive:
+      src: "https://github.com/prometheus/mysqld_exporter/releases/download/v{{ mysqld_exporter_version }}/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz"
+      dest: "/tmp"
+  - name: move mysqld exporter package to final destination
+    command:
+      cmd: "mv /tmp/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64 {{ mysqld_exporter_base_dir }}"
+      creates: "{{ mysqld_exporter_base_dir }}"
+  - name: setup file permissions
+    file:
+      path: "{{ mysqld_exporter_base_dir }}"
+      state: directory
+      recurse: yes
+      owner: prometheus
+      group: prometheus
+      mode: "o-rwx"
+  - name: install mysqld_exporter systemd service file
+    template:
+      src: "mysqld_exporter.service"
+      dest: "/etc/systemd/system/mysqld_exporter.service"
+      owner: root
+      group: root
+      mode: "0644"
+  - name: setup mysqld_exporter systemd service
+    systemd:
+      name: "mysqld_exporter.service"
+      daemon_reload: yes
+      enabled: yes
+  tags:
+    - mysqld_exporter

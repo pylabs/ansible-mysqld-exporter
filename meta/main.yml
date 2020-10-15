@@ -1,0 +1,18 @@
+galaxy_info:
+  role_name: mysqld_exporter
+  author: William Wu
+  description: Setup mysqld exporter
+  company: PyLabs
+  license: MIT
+  min_ansible_version: 2.1
+  platforms:
+  - name: Debian
+    versions:
+    - Buster
+    - 10
+  galaxy_tags:
+    - debian
+    - prometheus
+    - mysqld_exporter
+dependencies:
+  - pylabs.sysbase

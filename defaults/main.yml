@@ -1,0 +1,4 @@
+---
+mysqld_exporter_base_dir: "/opt/mysqld_exporter"
+mysqld_exporter_listen_address: "0.0.0.0"
+mysqld_exporter_listen_port: 9104
