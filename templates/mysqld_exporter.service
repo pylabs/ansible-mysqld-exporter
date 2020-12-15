@@ -11,7 +11,7 @@ ExecStart={{ mysqld_exporter_base_dir }}/mysqld_exporter --config.my-cnf {{ mysq
                                                          --collect.auto_increment.columns \
                                                          --collect.binlog_size \
                                                          --collect.engine_innodb_status \
-                                                         --collect.global_status
+                                                         --collect.global_status \
                                                          --web.listen-address={{ mysqld_exporter_listen_address }}:{{ mysqld_exporter_listen_port }}
 
 [Install]
