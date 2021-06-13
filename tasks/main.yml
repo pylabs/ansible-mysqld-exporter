@@ -1,28 +1,28 @@
 ---
 - block:
   - name: create prometheus group account
-    group:
+    ansible.builtin.group:
       name: prometheus
       system: yes
       state: present
   - name: create prometheus user account
-    user:
+    ansible.builtin.user:
       name: prometheus
       group: prometheus
       system: yes
       shell: "/bin/false"
       state: present
   - name: fetch mysqld exporter tar file and extract it to destination
-    unarchive:
+    ansible.builtin.unarchive:
       src: "https://github.com/prometheus/mysqld_exporter/releases/download/v{{ mysqld_exporter_version }}/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64.tar.gz"
       dest: "/tmp"
       remote_src: yes
   - name: move mysqld exporter package to final destination
-    command:
+    ansible.builtin.command:
       cmd: "mv /tmp/mysqld_exporter-{{ mysqld_exporter_version }}.linux-amd64 {{ mysqld_exporter_base_dir }}"
       creates: "{{ mysqld_exporter_base_dir }}"
   - name: setup file permissions
-    file:
+    ansible.builtin.file:
       path: "{{ mysqld_exporter_base_dir }}"
       state: directory
       recurse: yes
@@ -30,21 +30,21 @@
       group: prometheus
       mode: "o-rwx"
   - name: setup mysqld exporter config file
-    template:
+    ansible.builtin.template:
       src: "mysqld_exporter.cnf"
       dest: "{{ mysqld_exporter_base_dir }}/mysqld_exporter.cnf"
       owner: prometheus
       group: prometheus
       mode: "0660"
   - name: install mysqld_exporter systemd service file
-    template:
+    ansible.builtin.template:
       src: "mysqld_exporter.service"
       dest: "/etc/systemd/system/mysqld_exporter.service"
       owner: root
       group: root
       mode: "0644"
   - name: setup mysqld_exporter systemd service
-    systemd:
+    ansible.builtin.systemd:
       name: "mysqld_exporter.service"
       daemon_reload: yes
       enabled: yes
